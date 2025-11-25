@@ -2,7 +2,6 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { config } from './config/env';
 import apiRouter from './routes';
-import { registerMatchRoutes } from "./domain/match/match.routes";
 
 const app = express();
 
@@ -14,6 +13,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
 
+// Toutes les routes API
 app.use('/api', apiRouter);
 
 // Middleware d'erreur global typé
@@ -33,5 +33,3 @@ const port =
 app.listen(port, () => {
   console.log(`🚀 Backend listening on http://localhost:${port}`);
 });
-
-registerMatchRoutes(app);

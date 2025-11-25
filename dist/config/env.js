@@ -7,15 +7,10 @@ exports.config = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.config = {
-    riotApiKey: process.env.RIOT_API_KEY || '',
-    riotRegion: process.env.RIOT_REGION || 'EUW1',
-    riotPlatform: process.env.RIOT_PLATFORM || 'europe',
-    port: Number(process.env.PORT) || 4000,
-    dataDragonLang: process.env.DDRAGON_LANG || 'en_US',
+    riotApiKey: process.env.RIOT_API_KEY || "",
+    platform: process.env.RIOT_PLATFORM || "euw1", // ex: euw1
+    region: process.env.RIOT_REGION || "europe", // ex: europe
+    port: process.env.PORT || 4000,
+    // 🔥 nouveau champ pour Data Dragon
+    dataDragonLang: process.env.DDRAGON_LANG || "fr_FR",
 };
-console.log('RIOT_API_KEY loaded (prefix):', exports.config.riotApiKey.slice(0, 10));
-console.log('RIOT_REGION:', exports.config.riotRegion);
-console.log('RIOT_PLATFORM:', exports.config.riotPlatform);
-if (!exports.config.riotApiKey) {
-    console.warn('⚠️ RIOT_API_KEY is not set in .env');
-}

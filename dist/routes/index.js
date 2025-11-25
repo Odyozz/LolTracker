@@ -10,6 +10,8 @@ router.get('/summoner/:name', summoner_controller_1.SummonerController.getSummon
 // Matches
 router.get('/matches/:puuid', match_controller_1.MatchController.getMatchesByPuuid);
 router.get('/match/:matchId', match_controller_1.MatchController.getMatchById);
+// Analyse globale joueur
+router.get('/analysis/:puuid', match_controller_1.MatchController.getPlayerAnalysis);
 // Data Dragon
 router.get('/champions', static_controller_1.StaticController.getChampions);
 router.get('/items', static_controller_1.StaticController.getItems);

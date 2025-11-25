@@ -28,4 +28,18 @@ function registerMatchRoutes(app) {
             res.status(500).json({ error: 'MATCH_DETAIL_ERROR' });
         }
     });
+    // 🔹 Analyse globale du joueur sur X games (style DPM.lol)
+    app.get('/api/analysis/:puuid', async (req, res) => {
+        var _a;
+        try {
+            const puuid = req.params.puuid;
+            const count = Number((_a = req.query.count) !== null && _a !== void 0 ? _a : 20);
+            const analysis = await match_service_1.MatchService.getPlayerAnalysis(puuid, count);
+            res.json(analysis);
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'PLAYER_ANALYSIS_ERROR' });
+        }
+    });
 }
