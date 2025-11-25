@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { config } from './config/env';
 import apiRouter from './routes';
@@ -9,18 +9,21 @@ app.use(cors());
 app.use(express.json());
 
 // Healthcheck pour Render
-app.get('/api/health', (_req, res) => {
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });
 
 app.use('/api', apiRouter);
 
-// Middleware d'erreur global
-app.use((err: any, _req: any, res: any, _next: any) => {
-  console.error('Unhandled error:', err);
-  res.status(500).json({ error: 'Internal server error' });
-});
+// Middleware d'erreur global typé
+app.use(
+  (err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error('Unhandled error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+);
 
+// Render fournit PORT, sinon on tombe sur config.port, sinon 4000
 const port =
   Number(process.env.PORT) ||
   Number(config.port) ||

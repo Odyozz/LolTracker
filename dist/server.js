@@ -10,17 +10,17 @@ const routes_1 = __importDefault(require("./routes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// Healthcheck (Render va souvent taper là-dessus)
+// Healthcheck pour Render
 app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok' });
 });
 app.use('/api', routes_1.default);
-// Middleware d'erreur global
+// Middleware d'erreur global typé
 app.use((err, _req, res, _next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({ error: 'Internal server error' });
 });
-// ⚠️ IMPORTANT : Render fournit PORT
+// Render fournit PORT, sinon on tombe sur config.port, sinon 4000
 const port = Number(process.env.PORT) ||
     Number(env_1.config.port) ||
     4000;
