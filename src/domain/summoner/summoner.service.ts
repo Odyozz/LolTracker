@@ -44,6 +44,12 @@ export class SummonerService {
       );
 
       account = accountRes.data;
+
+      // 🔒 Sécurité + aide pour TypeScript : on s'assure que ce n'est pas null
+      if (!account) {
+        throw new Error('ACCOUNT_NOT_FOUND');
+      }
+
       console.log('[SummonerService] Account found (PUUID):', account.puuid);
 
       // 2️⃣ PUUID -> Summoner-v4 -> infos invocateur
