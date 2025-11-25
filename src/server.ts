@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { config } from './config/env';
 import apiRouter from './routes';
+import { registerMatchRoutes } from "./domain/match/match.routes";
 
 const app = express();
 
@@ -32,3 +33,5 @@ const port =
 app.listen(port, () => {
   console.log(`🚀 Backend listening on http://localhost:${port}`);
 });
+
+registerMatchRoutes(app);

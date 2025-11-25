@@ -13,6 +13,13 @@ export interface MatchSummary {
   csPerMin: number;
   goldPerMin: number;
   items: number[];
+
+  // champs bonus déjà calculés (optionnels)
+  totalCs?: number;
+  goldEarned?: number;
+  damageDealt?: number;
+  damageTaken?: number;
+  visionScore?: number;
 }
 
 export class MatchService {
@@ -25,6 +32,12 @@ export class MatchService {
       { params: { start: 0, count } }
     );
     return res.data as string[];
+  }
+
+  // 🔹 Détail brut d'une game (pour la page match detail plus tard)
+  static async getMatch(matchId: string): Promise<any> {
+    const res = await riotMatchApi.get(`/lol/match/v5/matches/${matchId}`);
+    return res.data;
   }
 
   static async getMatchSummary(
@@ -54,6 +67,9 @@ export class MatchService {
       totalMinionsKilled,
       neutralMinionsKilled,
       goldEarned,
+      totalDamageDealtToChampions,
+      totalDamageTaken,
+      visionScore,
       item0,
       item1,
       item2,
@@ -68,6 +84,10 @@ export class MatchService {
     const csPerMin = durationMinutes > 0 ? totalCs / durationMinutes : 0;
     const goldPerMin = durationMinutes > 0 ? goldEarned / durationMinutes : 0;
 
+    const items = [item0, item1, item2, item3, item4, item5, item6].filter(
+      (id: number) => typeof id === 'number' && id > 0
+    );
+
     const summary: MatchSummary = {
       matchId,
       championId,
@@ -80,7 +100,12 @@ export class MatchService {
       gameDuration,
       csPerMin,
       goldPerMin,
-      items: [item0, item1, item2, item3, item4, item5, item6],
+      items,
+      totalCs,
+      goldEarned,
+      damageDealt: totalDamageDealtToChampions,
+      damageTaken: totalDamageTaken,
+      visionScore,
     };
 
     return summary;

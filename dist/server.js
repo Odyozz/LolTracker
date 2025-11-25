@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const env_1 = require("./config/env");
 const routes_1 = __importDefault(require("./routes"));
+const match_routes_1 = require("./domain/match/match.routes");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -27,3 +28,4 @@ const port = Number(process.env.PORT) ||
 app.listen(port, () => {
     console.log(`🚀 Backend listening on http://localhost:${port}`);
 });
+(0, match_routes_1.registerMatchRoutes)(app);

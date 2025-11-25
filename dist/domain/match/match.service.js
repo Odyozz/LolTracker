@@ -7,6 +7,11 @@ class MatchService {
         const res = await riotClient_1.riotMatchApi.get(`/lol/match/v5/matches/by-puuid/${puuid}/ids`, { params: { start: 0, count } });
         return res.data;
     }
+    // 🔹 Détail brut d'une game (pour la page match detail plus tard)
+    static async getMatch(matchId) {
+        const res = await riotClient_1.riotMatchApi.get(`/lol/match/v5/matches/${matchId}`);
+        return res.data;
+    }
     static async getMatchSummary(matchId, puuid) {
         const res = await riotClient_1.riotMatchApi.get(`/lol/match/v5/matches/${matchId}`);
         const matchData = res.data;
@@ -16,11 +21,12 @@ class MatchService {
         if (!participant) {
             throw new Error('PARTICIPANT_NOT_FOUND');
         }
-        const { championId, role, lane, kills, deaths, assists, win, totalMinionsKilled, neutralMinionsKilled, goldEarned, item0, item1, item2, item3, item4, item5, item6, } = participant;
+        const { championId, role, lane, kills, deaths, assists, win, totalMinionsKilled, neutralMinionsKilled, goldEarned, totalDamageDealtToChampions, totalDamageTaken, visionScore, item0, item1, item2, item3, item4, item5, item6, } = participant;
         const totalCs = totalMinionsKilled + neutralMinionsKilled;
         const durationMinutes = gameDuration / 60;
         const csPerMin = durationMinutes > 0 ? totalCs / durationMinutes : 0;
         const goldPerMin = durationMinutes > 0 ? goldEarned / durationMinutes : 0;
+        const items = [item0, item1, item2, item3, item4, item5, item6].filter((id) => typeof id === 'number' && id > 0);
         const summary = {
             matchId,
             championId,
@@ -33,7 +39,12 @@ class MatchService {
             gameDuration,
             csPerMin,
             goldPerMin,
-            items: [item0, item1, item2, item3, item4, item5, item6],
+            items,
+            totalCs,
+            goldEarned,
+            damageDealt: totalDamageDealtToChampions,
+            damageTaken: totalDamageTaken,
+            visionScore,
         };
         return summary;
     }
