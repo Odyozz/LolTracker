@@ -9,7 +9,8 @@
     "build:backend": "tsc -p tsconfig.server.json",
     "start": "next start",
     "start:backend": "node dist/server.js",
-    "test:riot:summoner": "node -r dotenv/config -e \"import('./tools/test-riot-summoner.ts')\""
+    "test:riot:summoner": "node tools/test-riot-summoner.js"
+
   },
   "dependencies": {
     "axios": "^1.13.2",
