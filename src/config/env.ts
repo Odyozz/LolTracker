@@ -4,7 +4,10 @@ dotenv.config();
 
 export const config = {
   riotApiKey: process.env.RIOT_API_KEY || "",
-  platform: process.env.RIOT_PLATFORM || "euw1",   // shard "platform"
-  region: process.env.RIOT_REGION || "europe",     // shard "region" pour Match-v5
+  platform: process.env.RIOT_PLATFORM || "euw1",   // ex: euw1
+  region: process.env.RIOT_REGION || "europe",     // ex: europe
   port: process.env.PORT || 4000,
+
+  // 🔥 nouveau champ pour Data Dragon
+  dataDragonLang: process.env.DDRAGON_LANG || "fr_FR",
 };

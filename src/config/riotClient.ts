@@ -9,7 +9,7 @@ export const riotAccountApi = axios.create({
   },
 });
 
-// Summoner-v4 / League-v4 → PLATFORM shard (euw1)
+ 
 export const riotSummonerApi = axios.create({
   baseURL: `https://${config.platform}.api.riotgames.com`,
   headers: {
