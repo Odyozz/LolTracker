@@ -1,13 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:4000/api/:path*', // backend express
-      },
-    ];
-  },
+  // Plus de rewrites vers localhost, on laisse les routes app/api/* faire le boulot
 };
 
 module.exports = nextConfig;
