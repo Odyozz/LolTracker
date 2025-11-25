@@ -1,40 +1,34 @@
-import { NextResponse } from 'next/server';
+export async function GET(
+  _request: Request,
+  { params }: { params: { riotId: string } }
+) {
+  const riotId = params.riotId;
 
-type Params = {
-  riotId: string;
-};
+  // 🔧 backend Render par défaut si BACKEND_URL absent
+  const backendBase =
+    process.env.BACKEND_URL || "https://loltracker.onrender.com";
 
-export async function GET(_req: Request, { params }: { params: Params }) {
+  const url = `${backendBase}/api/summoner/${encodeURIComponent(riotId)}`;
+
   try {
-    const riotId = params.riotId;
-    console.log('[Next API] /api/summoner/', riotId);
+    console.log("[Next API] Fetching backend:", url);
 
-    const backendRes = await fetch(
-      `http://localhost:4000/api/summoner/${encodeURIComponent(riotId)}`,
-      { cache: 'no-store' }
-    );
+    const res = await fetch(url);
+    const text = await res.text();
 
-    const text = await backendRes.text();
-    console.log(
-      '[Next API] Backend status:',
-      backendRes.status,
-      'body:',
-      text.slice(0, 200)
-    );
-
-    if (!backendRes.ok) {
-      return new NextResponse(text, { status: backendRes.status });
+    if (!res.ok) {
+      console.error("[Next API] Backend error", res.status, text);
+      return new Response(text, { status: res.status });
     }
 
-    // On renvoie tel quel mais en forçant le Content-Type JSON
-    return new NextResponse(text, {
+    return new Response(text, {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
-  } catch (err) {
-    console.error('[Next API] Error in /api/summoner:', err);
-    return NextResponse.json(
-      { error: 'Failed to fetch summoner' },
+  } catch (err: any) {
+    console.error("[Next API] Proxy error", err);
+    return new Response(
+      JSON.stringify({ error: "BACKEND_UNREACHABLE" }),
       { status: 500 }
     );
   }
